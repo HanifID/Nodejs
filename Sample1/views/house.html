@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html>
+
+<head>
+    <title>Title of House Page</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/dataTables.bootstrap5.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/editor.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/jquery-confirm.min.css">
+</head>
+
+<body>
+
+    <div class="navbar"></div>
+    <div class="col-lg-8 mx-auto p-3 py-md-5">
+
+        <div id="about-main-content" style="margin-bottom: 30px;">
+            <h1 class="mt-5">HOUSE CRUD</h1>
+            <p class="lead">House a footer to the bottom of the viewport in desktop browsers with this custom HTML and
+                CSS. A fixed navbar has been added with <code class="small">padding-top: 60px;</code> on the <code
+                    class="small">main &gt; .container</code>.</p>
+            <p>Car Back to <a href="../examples/sticky-footer/">the default sticky footer</a> minus the navbar.</p>
+            <div class="d-flex flex-row-reverse">
+                <button type="button" id="btnAdd" data-bs-toggle="modal" data-bs-target="#houseModal"
+                    class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add House</button>
+                <button type="button" id="delete" class="btn btn-danger" data-id="1" title="Delete Data"
+                    style="margin-right: 15px;"><i class="bi bi-trash"></i>Delete</button>
+            </div>
+            <hr class="mb-4">
+            <table id="mainTable" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="select_all" value="1" id="select-all"></th>
+                        <th>Owner</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <!-- Modal -->
+            <div class="modal fade" id="houseModal" tabindex="-1" aria-labelledby="houseModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <h5 class="modal-title text-white" id="houseModalLabel">New House</h5>
+                        </div>
+                        <form id="houseForm">
+                            <input type="hidden" id="houseId" value="" />
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="employeeName" class="form-label">Owner</label>
+                                    <select id="employeeName" class="form-control" required></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea id="address" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-save"></i>
+                                    Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/js.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-confirm.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/app/house.js}"></script>
+
+</body>
+
+</html>

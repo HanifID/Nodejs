@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #upper-static-resources},
+                                                ~{:: #bottom-static-resources},
+                                                ~{:: #about-header},
+                                                ~{:: #about-nav},
+                                                ~{:: #about-main-content},
+                                                ~{:: #about-footer}
+                                               )}">
+
+<head>
+    <title>Profile</title>
+</head>
+<body>
+<div id="upper-static-resources">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/dataTables.bootstrap5.min.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/jquery-confirm.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</div>
+
+<div id="about-main-content" style="margin-bottom: 30px;">
+    <div class="col-lg-8">
+        <h1 class="mt-5" ><strong sec:authentication="name" ></strong></h1>
+        <hr>
+    </div>
+    <div class="col-lg-8">
+        <div class="d-flex flex-row-reverse">
+            <button type="button" id="btnEditProfile"  class="btn btn-outline-primary" ><i class="bi bi-pencil-square"></i> Edit Profile</button>
+            <button type="button" id="btnCancelEdit"  class="btn btn-outline-primary" style="display :none"><i class="bi bi-pencil-square"></i> Cancel</button>
+        </div>
+    </div>
+    <br>
+    <div th:if="${ #authentication.name == #httpServletRequest.getParameter('u') }">
+        <h5>Employee details</h5>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Full Name</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" id="txtEmployeeName" th:text="${employee.fullName}"></p>
+                            <input type="hidden" id="employeeId" th:value="${employee.id}" />
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnEmployeeName" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                        <br>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Birth Date</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" id="txtBirthdate" th:text="${#temporals.format(employee.birthdate, 'dd-MMM-yyyy')}"></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnBirthDate" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Hire Date</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" id="txtHireDate" th:text="${#temporals.format(employee.hireDate, 'dd-MMM-yyyy hh:MM')}"></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnHireDate" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Wear Glasses</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" id="txtGlasses" th:text="${employee.wearGlasses}"></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnWearGlasses" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Salary</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" id="txtSalary" th:text="${employee.salary}"></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnSalary" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Biography</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <textarea id="txtBiography" name="object" th:field="*{employee.biography}"></textarea>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" id="btnBiography" class="btn btn-sm btn-outline-success edit" data-bs-toggle="modal" data-bs-target="#biographyModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Boss</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p class="text-muted mb-0" ></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-sm btn-outline-success edit"   style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5>Username</h5>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Username</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <p class="text-muted mb-0" id="username" th:text="${employee.username.id}"></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Password</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <p class="text-muted mb-0">************</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnPassword" class="btn btn-sm btn-outline-success edit"  data-bs-toggle="modal" data-bs-target="#profileModal" style="display:none;"><i class="bi bi-pencil-fill"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h5>Car</h5>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Year</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="car,iteration: ${cars}">
+                                    <td th:text="${iteration.count}"></td>
+                                    <td th:text="${car.brand}"></td>
+                                    <td th:text="${car.name}"></td>
+                                    <td th:text="${car.year}"></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+            </div>
+        </div>
+
+        <h5>Home</h5>
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="house,iteration: ${houses}">
+                            <td th:text="${iteration.count}"></td>
+                            <td th:text="${house.address}"></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    modal-->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title text-white" id="profileModalTitle">Edit</h5>
+                </div>
+                <form id="profile">
+                    <div class="modal-body" id="modalBody">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnClose" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="btnSave" class="btn btn-success btn-sm"><i class="bi bi-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--    modal-->
+    <div class="modal fade" id="biographyModal" tabindex="-1" aria-labelledby="biographyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title text-white" id="biographyModalTitle">Edit</h5>
+                </div>
+                <form>
+                    <div class="modal-body" >
+                        <div class="mb-3">
+                            <label  class="form-label">Biography</label>
+                            <textarea class="form-control" id="biography"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCloseBio" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="btnSaveBio" class="btn btn-success btn-sm"><i class="bi bi-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <th:block id="bottom-static-resources">
+        <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/dataTables.bootstrap5.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/tinymce/tinymce.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery-confirm.min.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/app/profile.js}"></script>
+    </th:block>
+</body>
+</html>
