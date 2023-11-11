@@ -1,4 +1,6 @@
 # Nodejs
+This is sample of simple Node.js project
+
 # Getting Started
 
 Important Commands
